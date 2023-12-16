@@ -10,65 +10,43 @@ export class MessageService implements ProcessService {
 
     const newGames: Game[] = [];
     const droppedGames: Game[] = oldData.games.filter((oldGame) =>
-      newData.games.every((newGame) => newGame.name !== oldGame.name),
+      newData.games.every((newGame) => newGame.id !== oldGame.id),
     );
-    const increaseGames: { games: Game[]; change: number } = { games: [], change: 0 };
-    const decreaseGames: { games: Game[]; change: number } = { games: [], change: 0 };
-    const gamesByYear: { [year: string]: number } = {};
+    const increasedGames: { [change: string]: Game[] } = {};
+    const decreasedGames: { [change: string]: Game[] } = {};
 
-    const gamesList = newData.games.reduce((list, game) => {
-      const oldGame = oldData.games.find((old) => old.name === game.name);
-
-      gamesByYear[game.year] = gamesByYear[game.year] ? gamesByYear[game.year] + 1 : 1;
+    newData.games.forEach((game) => {
+      const oldGame = oldData.games.find((old) => old.id === game.id);
 
       if (!oldGame) {
         newGames.push(game);
-
-        return `${list}\n${this.formatGame(game, ' 🆕')}`;
+        return;
       }
 
       const change = oldGame.rank - game.rank;
 
-      if (change > 0 && change >= increaseGames.change) {
-        if (change > increaseGames.change) {
-          increaseGames.change = change;
-          increaseGames.games = [];
-        }
+      if (change > 0) increasedGames[change] = [...(increasedGames[change] || []), game];
+      if (change < 0) decreasedGames[change] = [...(decreasedGames[change] || []), game];
+    });
 
-        increaseGames.games.push(game);
-      }
+    const newGamesString = this.getAdditionalList('🆕 Game(s) new in Top 1000', newGames);
+    const droppedGamesString = this.getAdditionalList('❌ Game(s) dropped out of Top 1000', droppedGames);
 
-      if (change < 0 && change <= decreaseGames.change) {
-        if (change < decreaseGames.change) {
-          decreaseGames.change = change;
-          decreaseGames.games = [];
-        }
+    const increasedGamesStrings = Object.keys(increasedGames)
+      .sort()
+      .map((change) =>
+        this.getAdditionalList(`⬆️ ${change} position${Number(change) > 1 ? 's' : ''} up`, increasedGames[change]),
+      );
 
-        decreaseGames.games.push(game);
-      }
+    const decreasedGamesStrings = Object.keys(decreasedGames)
+      .sort()
+      .map((change) =>
+        this.getAdditionalList(`⬇️ ${change} position${Number(change) < -1 ? 's' : ''} down`, decreasedGames[change]),
+      );
 
-      const changeString = change > 0 ? ` ⬆️ +${change}` : change < 0 ? ` ⬇️ ${change}` : '';
-
-      return `${list}\n${this.formatGame(game, changeString)}`;
-    }, '');
-
-    const newGamesString = this.getAdditionalList('🆕 Game(s) new in Top 100', newGames);
-    const droppedGamesString = this.getAdditionalList('❌ Game(s) dropped out of Top 100', droppedGames);
-
-    const increaseGamesString = this.getAdditionalList(
-      `⬆️ Highest ranking increase${increaseGames.change > 0 ? ` (+${increaseGames.change})` : ''}`,
-      increaseGames.games,
-    );
-    const decreaseGamesString = this.getAdditionalList(
-      `⬇️ Highest ranking decrease${decreaseGames.change < 0 ? ` (${decreaseGames.change})` : ''}`,
-      decreaseGames.games,
-    );
-
-    const gamesByYearString = `📅 Games by Release Year:${Object.keys(gamesByYear).map(
-      (year) => `\n${year}: ${gamesByYear[year]}`,
-    )}`;
-
-    return `${date}\n\n${oldDate}\n${gamesList}\n\n${newGamesString}\n\n${droppedGamesString}\n\n${increaseGamesString}\n\n${decreaseGamesString}\n\n${gamesByYearString}`;
+    return `${date}\n\n${oldDate}\n\n${newGamesString}\n\n${droppedGamesString}\n\n\n${increasedGamesStrings.join(
+      '\n\n',
+    )}\n\n\n${decreasedGamesStrings.join('\n\n')}`;
   }
 
   private getDateString(text: string, date: string): string {
