@@ -25,21 +25,21 @@ export class MessageService implements ProcessService {
 
       const change = oldGame.rank - game.rank;
 
-      if (change > 0) increasedGames[change] = [...(increasedGames[change] || []), game];
-      if (change < 0) decreasedGames[change] = [...(decreasedGames[change] || []), game];
+      if (change > 1) increasedGames[change] = [...(increasedGames[change] || []), game];
+      if (change < -1) decreasedGames[change] = [...(decreasedGames[change] || []), game];
     });
 
     const newGamesString = this.getAdditionalList('🆕 Game(s) new in Top 1000', newGames);
     const droppedGamesString = this.getAdditionalList('❌ Game(s) dropped out of Top 1000', droppedGames);
 
     const increasedGamesStrings = Object.keys(increasedGames)
-      .sort()
+      .sort((change1, change2) => Number(change2) - Number(change1))
       .map((change) =>
         this.getAdditionalList(`⬆️ ${change} position${Number(change) > 1 ? 's' : ''} up`, increasedGames[change]),
       );
 
     const decreasedGamesStrings = Object.keys(decreasedGames)
-      .sort()
+      .sort((change1, change2) => Number(change1) - Number(change2))
       .map((change) =>
         this.getAdditionalList(`⬇️ ${change} position${Number(change) < -1 ? 's' : ''} down`, decreasedGames[change]),
       );
