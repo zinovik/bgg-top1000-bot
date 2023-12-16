@@ -35,13 +35,13 @@ export class MessageService implements ProcessService {
     const increasedGamesStrings = Object.keys(increasedGames)
       .sort((change1, change2) => Number(change2) - Number(change1))
       .map((change) =>
-        this.getAdditionalList(`⬆️ ${change} position${Number(change) > 1 ? 's' : ''} up`, increasedGames[change]),
+        this.getAdditionalList(`⬆️ ${change} positions up`, increasedGames[change]),
       );
 
     const decreasedGamesStrings = Object.keys(decreasedGames)
       .sort((change1, change2) => Number(change1) - Number(change2))
       .map((change) =>
-        this.getAdditionalList(`⬇️ ${change} position${Number(change) < -1 ? 's' : ''} down`, decreasedGames[change]),
+        this.getAdditionalList(`⬇️ ${Math.abs(Number(change))} positions down`, decreasedGames[change]),
       );
 
     return `${date}\n\n${oldDate}\n\n${newGamesString}\n\n${droppedGamesString}\n\n\n${increasedGamesStrings.join(
