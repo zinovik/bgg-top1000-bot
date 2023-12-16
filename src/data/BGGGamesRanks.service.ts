@@ -1,0 +1,13 @@
+import axios from 'axios';
+import { DataService } from './DataService.interface';
+import { Data } from '../common/model/Data.interface';
+
+const URL = 'https://bgg-games-ranks.vercel.app/api/get-games?amount=1000';
+
+export class BGGGamesRanksService implements DataService {
+  async getData(): Promise<Data> {
+    const { data } = await axios.get(URL);
+
+    return data;
+  }
+}
