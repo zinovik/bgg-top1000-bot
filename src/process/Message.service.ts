@@ -44,7 +44,7 @@ export class MessageService implements ProcessService {
         this.getAdditionalList(`⬇️ ${Math.abs(Number(change))} positions down`, decreasedGames[change]),
       );
 
-    return `${date}\n\n${oldDate}\n\n${newGamesString}\n\n${droppedGamesString}\n\n\n${increasedGamesStrings.join(
+    return `${date}\n\n${oldDate}\n\n\n${newGamesString}\n\n${droppedGamesString}\n\n\n${increasedGamesStrings.join(
       '\n\n',
     )}\n\n\n${decreasedGamesStrings.join('\n\n')}`;
   }
