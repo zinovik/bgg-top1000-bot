@@ -42,11 +42,11 @@ export class MessageService implements ProcessService {
       .sort((change1, change2) => Number(change1) - Number(change2))
       .map((change) => this.getAdditionalList(`⬇️ ${Math.abs(Number(change))}`, decreasedGames[change]));
 
-    return `${date}\n\n${oldDate}\n\n${newGamesString}\n\n${droppedGamesString}\n\nPOSITIONS UP (${
+    return `${date}\n\n${oldDate}\n\n${newGamesString}\n\n${droppedGamesString}\n\nPOSITIONS UP (⬆️ ${
       MINIMAL_CHANGE + 1
-    } min)\n\n${increasedGamesStrings.join('\n\n')}\n\nPOSITIONS DOWN (${
+    } minimum)\n\n${increasedGamesStrings.join('\n\n')}\n\nPOSITIONS DOWN (⬇️ ${
       MINIMAL_CHANGE + 1
-    } min)\n\n${decreasedGamesStrings.join('\n\n')}`;
+    } minimum)\n\n${decreasedGamesStrings.join('\n\n')}`;
   }
 
   private getDateString(text: string, date: string): string {
