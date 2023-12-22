@@ -42,9 +42,11 @@ export class MessageService implements ProcessService {
       .sort((change1, change2) => Number(change1) - Number(change2))
       .map((change) => this.getAdditionalList(`⬇️ ${Math.abs(Number(change))}`, decreasedGames[change]));
 
-    return `${date}\n\n${oldDate}\n\n\n${newGamesString}\n\n${droppedGamesString}\n\nPositions up (${MINIMAL_CHANGE} min)\n${increasedGamesStrings.join(
-      '\n\n',
-    )}\n\nPositions down (${MINIMAL_CHANGE} min)\n${decreasedGamesStrings.join('\n\n')}`;
+    return `${date}\n\n${oldDate}\n\n${newGamesString}\n\n${droppedGamesString}\n\nPOSITIONS UP (${
+      MINIMAL_CHANGE + 1
+    } min)\n\n${increasedGamesStrings.join('\n\n')}\n\nPOSITIONS DOWN (${
+      MINIMAL_CHANGE + 1
+    } min)\n\n${decreasedGamesStrings.join('\n\n')}`;
   }
 
   private getDateString(text: string, date: string): string {
@@ -61,7 +63,7 @@ export class MessageService implements ProcessService {
   private getAdditionalList(text: string, games: Game[]): string {
     const gamesString = games.map((game) => this.formatGame(game)).join('\n');
 
-    return `${text}:\n${gamesString || 'none'}`;
+    return `${text}\n${gamesString || 'none'}`;
   }
 
   private formatGame(game: { rank: number; name: string; year: string }, changeString = ''): string {
