@@ -26,7 +26,7 @@ export class Main {
     const oldData = await this.databaseService.getData();
 
     const message = this.processService.formatMessage({ newData, oldData });
-    console.log(`${message}\n${message.length}`);
+    console.log(`${message}\n${message && message.length}`);
 
     await this.messengerService.sendMessage({ chatId: this.configuration.channelId, text: message });
 
