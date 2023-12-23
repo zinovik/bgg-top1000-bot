@@ -32,6 +32,7 @@ export class TelegramService implements MessengerService {
         console.log(`Telegram message was successfully sent: ${JSON.stringify(data)}`);
       } catch (error) {
         console.error('Error sending Telegram message', (error as any)?.response?.data?.description || error);
+        throw new Error();
       }
     }
   }
