@@ -27,28 +27,20 @@ export class TelegramService implements MessengerService {
                 parse_mode: 'Markdown',
             };
 
-            try {
-                console.log(
-                    `Sending telegram message: ${JSON.stringify(message)}...`
-                );
+            console.log(
+                `Sending telegram message: ${JSON.stringify(message)}...`
+            );
 
-                const { data }: { data: ISendMessageResult } = await axios.post(
-                    `${TELEGRAM_API_URL}${this.token}/sendMessage`,
-                    message
-                );
+            const { data }: { data: ISendMessageResult } = await axios.post(
+                `${TELEGRAM_API_URL}${this.token}/sendMessage`,
+                message
+            );
 
-                console.log(
-                    `Telegram message was successfully sent: ${JSON.stringify(
-                        data
-                    )}`
-                );
-            } catch (error) {
-                console.error(
-                    'Error sending Telegram message',
-                    (error as any)?.response?.data?.description || error
-                );
-                throw new Error();
-            }
+            console.log(
+                `Telegram message was successfully sent: ${JSON.stringify(
+                    data
+                )}`
+            );
         }
     }
 
