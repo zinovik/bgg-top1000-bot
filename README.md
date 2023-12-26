@@ -10,6 +10,7 @@ This bot posts [BGG Top 1000](https://boardgamegeek.com/browse/boardgame) change
 
 ```bash
 gcloud storage buckets create gs://boardgamegeek --location=us-central1
+gcloud storage buckets update gs://boardgamegeek --versioning
 ```
 
 ### create schedulers
