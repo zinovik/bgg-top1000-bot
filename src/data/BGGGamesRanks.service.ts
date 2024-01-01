@@ -14,7 +14,7 @@ export class BGGGamesRanksService implements DataService {
         const { data }: { data: Data } = await (
             await this.client
         ).request<Data>({
-            url: `${URL}?amount=1000`,
+            url: `${this.parserUrl}?amount=1000`,
             method: 'GET',
         });
 
