@@ -3,7 +3,7 @@ import { Data } from '../common/model/Data.interface';
 
 type Game = { rank: number; name: string; year: string };
 
-const MINIMAL_CHANGE = 4;
+const MINIMAL_CHANGE = 5;
 
 export class MessageService implements ProcessService {
     formatMessage({
