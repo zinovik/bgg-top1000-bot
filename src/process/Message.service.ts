@@ -3,15 +3,15 @@ import { Data } from '../common/model/Data.interface';
 
 type Game = { rank: number; name: string; year: string };
 
-const MINIMAL_CHANGE = 5;
-
 export class MessageService implements ProcessService {
     formatMessage({
         newData,
         oldData,
+        minimalChange,
     }: {
         newData: Data;
         oldData: Data;
+        minimalChange: number;
     }): string {
         const date = this.getDateString('On date', newData.date);
         const oldDate = this.getDateString('Changes from date', oldData.date);
@@ -33,12 +33,12 @@ export class MessageService implements ProcessService {
 
             const change = oldGame.rank - game.rank;
 
-            if (change >= MINIMAL_CHANGE)
+            if (change >= minimalChange)
                 increasedGames[change] = [
                     ...(increasedGames[change] || []),
                     game,
                 ];
-            if (change <= 0 - MINIMAL_CHANGE)
+            if (change <= 0 - minimalChange)
                 decreasedGames[change] = [
                     ...(decreasedGames[change] || []),
                     game,
@@ -69,9 +69,9 @@ export class MessageService implements ProcessService {
                 )
             );
 
-        return `${date}\n\n${oldDate}\n\n${newGamesString}\n\n${droppedGamesString}\n\nPOSITIONS UP (⬆️ ${MINIMAL_CHANGE} minimum)\n\n${increasedGamesStrings.join(
+        return `${date}\n\n${oldDate}\n\n${newGamesString}\n\n${droppedGamesString}\n\nPOSITIONS UP (⬆️ ${minimalChange} minimum)\n\n${increasedGamesStrings.join(
             '\n\n'
-        )}\n\nPOSITIONS DOWN (⬇️ ${MINIMAL_CHANGE} minimum)\n\n${decreasedGamesStrings.join(
+        )}\n\nPOSITIONS DOWN (⬇️ ${minimalChange} minimum)\n\n${decreasedGamesStrings.join(
             '\n\n'
         )}`;
     }

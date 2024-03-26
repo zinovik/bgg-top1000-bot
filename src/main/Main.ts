@@ -4,6 +4,10 @@ import { StorageService } from '../storage/Storage.interface';
 import { ProcessService } from '../process/ProcessService.interface';
 import { MessengerService } from '../messenger/MessengerService.interface';
 
+const MAX_MINIMAL_CHANGE = 5;
+const MIN_MINIMAL_CHANGE = 1;
+const MAX_MESSAGE_LENGTH = 4095;
+
 export class Main {
     constructor(
         private readonly configuration: Configuration,
@@ -17,7 +21,22 @@ export class Main {
         const newData = await this.dataService.getData();
         const oldData = await this.storageService.getData();
 
-        const message = this.processService.formatMessage({ newData, oldData });
+        let message;
+
+        for (let i = MAX_MINIMAL_CHANGE; i > MIN_MINIMAL_CHANGE; i--) {
+            const processedMessage = this.processService.formatMessage({
+                newData,
+                oldData,
+                minimalChange: i,
+            });
+
+            if (!message || processedMessage.length <= MAX_MESSAGE_LENGTH) {
+                message = processedMessage;
+            } else {
+                break;
+            }
+        }
+
         console.log(`${message}\n${message && message.length}`);
 
         await this.messengerService.sendMessage({
