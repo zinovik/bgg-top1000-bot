@@ -17,7 +17,8 @@
         "@google-cloud/functions-framework": "3.3.0",
         "@google-cloud/storage": "7.7.0",
         "axios": "1.6.2",
-        "google-auth-library": "9.4.1"
+        "google-auth-library": "9.4.1",
+        "stream-shift": "1.0.3"
     },
     "devDependencies": {
         "@types/jest": "29.0.1",
