@@ -3,6 +3,7 @@
 # BGG Top 1000
 
 This bot posts [BGG Top 1000](https://boardgamegeek.com/browse/boardgame) changes to [@bggtop1000](https://t.me/bggtop1000) every week.
+https://europe-central2-zinovik-project.cloudfunctions.net/bgg-top1000-bot
 
 ## google cloud setup
 
@@ -16,9 +17,9 @@ gcloud storage buckets update gs://boardgamegeek --versioning
 ### create schedulers
 
 ```bash
-gcloud scheduler jobs create http bgg-top1000-bot --location=europe-central2 --schedule="0 9 * * 6" --uri="https://europe-central2-zinovik-project.cloudfunctions.net/bgg-top1000-bot?channelId=@bggtop1000&isDevMode=off" --oidc-service-account-email=zinovik-project@appspot.gserviceaccount.com --http-method=get --oidc-token-audience="https://europe-central2-zinovik-project.cloudfunctions.net/bgg-top1000-bot" --attempt-deadline=180s
+gcloud scheduler jobs create http bgg-top1000-bot --location=europe-central2 --schedule="0 9 * * 6" --uri="https://europe-central2-zinovik-project.cloudfunctions.net/bgg-top1000-bot?channelId=@bggtop1000&isDevMode=off" --oidc-service-account-email=zinovik-project@appspot.gserviceaccount.com --http-method=get --oidc-token-audience="https://europe-central2-zinovik-project.cloudfunctions.net/bgg-top1000-bot" --attempt-deadline=180s --max-retry-attempts=3
 
-gcloud scheduler jobs create http bgg-top1000-bot-dev --location=europe-central2 --schedule="0 15 * * 5" --uri="https://europe-central2-zinovik-project.cloudfunctions.net/bgg-top1000-bot?channelId=446618160&isDevMode=on" --oidc-service-account-email=zinovik-project@appspot.gserviceaccount.com --http-method=get --oidc-token-audience="https://europe-central2-zinovik-project.cloudfunctions.net/bgg-top1000-bot" --attempt-deadline=180s
+gcloud scheduler jobs create http bgg-top1000-bot-dev --location=europe-central2 --schedule="0 15 * * 5" --uri="https://europe-central2-zinovik-project.cloudfunctions.net/bgg-top1000-bot?channelId=446618160&isDevMode=on" --oidc-service-account-email=zinovik-project@appspot.gserviceaccount.com --http-method=get --oidc-token-audience="https://europe-central2-zinovik-project.cloudfunctions.net/bgg-top1000-bot" --attempt-deadline=180s --max-retry-attempts=3
 ```
 
 ### create service account
